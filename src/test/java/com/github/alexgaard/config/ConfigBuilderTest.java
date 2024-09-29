@@ -2,14 +2,14 @@ package com.github.alexgaard.config;
 
 import org.junit.jupiter.api.Test;
 
-public class ConfigLoaderTest {
+public class ConfigBuilderTest {
 
     @Test
     public void test() {
-        Config config = new ConfigLoader()
+        Config config = new ConfigBuilder()
                 .loadEnvironmentVariables()
                 .loadSystemProperties()
-                .merge();
+                .build();
 
         System.out.println(config);
     }

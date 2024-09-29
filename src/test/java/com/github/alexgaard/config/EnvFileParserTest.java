@@ -1,7 +1,7 @@
 package com.github.alexgaard.config;
 
+import com.github.alexgaard.config.parser.EnvFileParser;
 import io.github.cdimascio.dotenv.Dotenv;
-import io.github.cdimascio.dotenv.internal.DotenvParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

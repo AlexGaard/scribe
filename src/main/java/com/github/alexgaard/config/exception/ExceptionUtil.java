@@ -1,5 +1,7 @@
 package com.github.alexgaard.config.exception;
 
+import java.util.function.Function;
+
 public class ExceptionUtil {
 
     private ExceptionUtil() {}
@@ -18,6 +20,20 @@ public class ExceptionUtil {
         if (t == null) throw new RuntimeException();
         //noinspection unchecked
         throw (T) t;
+    }
+
+    public static <R> Function<String, R> wrapException(String key, UnsafeFunction<String, R> func) {
+        return (String value) -> {
+            try {
+                return func.apply(value);
+            } catch (Exception e) {
+                throw new InvalidValueException(key, value, e);
+            }
+        };
+    }
+
+    public interface UnsafeFunction<T, R> {
+        R apply(T t) throws Exception;
     }
 
 }

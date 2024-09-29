@@ -1,4 +1,4 @@
-package com.github.alexgaard.config;
+package com.github.alexgaard.config.parser;
 
 import com.github.alexgaard.config.exception.InvalidEnvFileException;
 
@@ -34,20 +34,20 @@ public class EnvFileParser {
             }
 
             if (envEntry == null) {
-                int seperatorIdx = trimmedLine.indexOf("=");
+                int separatorIdx = trimmedLine.indexOf("=");
 
-                if (seperatorIdx == -1) {
+                if (separatorIdx == -1) {
                     throw new InvalidEnvFileException();
                 }
 
-                String name = trimmedLine.substring(0, seperatorIdx).trim();
+                String name = trimmedLine.substring(0, separatorIdx).trim();
                 Matcher matcher = validNamePattern.matcher(name);
 
                 if (!matcher.matches()) {
                     throw new InvalidEnvFileException();
                 }
 
-                String value = trimmedLine.substring(seperatorIdx + 1).trim();
+                String value = trimmedLine.substring(separatorIdx + 1).trim();
 
                 boolean isQuoted = value.charAt(0) == '"';
                 boolean hasEndQuote = value.charAt(value.length() - 1) == '"';
