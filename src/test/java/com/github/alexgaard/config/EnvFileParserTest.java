@@ -1,7 +1,6 @@
 package com.github.alexgaard.config;
 
 import com.github.alexgaard.config.parser.EnvFileParser;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
@@ -13,23 +12,53 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class EnvFileParserTest {
 
     @Test
-    void shouldParseValidEnvFile() {
-        String envFileContent = readTestResource("valid.env");
-        Map<String, String> envVariables = EnvFileParser.parseEnvFileContent(envFileContent);
-        assertEquals("world", envVariables.get("HELLO"));
-        assertEquals("test", envVariables.get("VAR_1"));
-        assertEquals("test1", envVariables.get("VAR_2"));
-        assertEquals("=", envVariables.get("VAR_3"));
-        assertEquals("test1#test2", envVariables.get("VAR_4"));
-        assertEquals("test5\"", envVariables.get("var_5"));
+    void shouldParseEnvFile() {
+        String envFileContent = readTestResource("example.env");
+        Map<String, String> vars = EnvFileParser.parseEnvFileContent(envFileContent);
 
-        Dotenv dotenv = Dotenv.configure()
-                .filename("valid.env")
-                .load();
+        assertEquals("basic", vars.get("BASIC"));
+        assertEquals("AFTER_LINE", vars.get("AFTER_LINE"));
+        assertEquals("", vars.get("EMPTY"));
+        assertEquals("single_quotes", vars.get("SINGLE_QUOTES"));
+        assertEquals("    single quotes    ", vars.get("SINGLE_QUOTES_SPACED"));
+        assertEquals("double_quotes", vars.get("DOUBLE_QUOTES"));
+        assertEquals("    double quotes    ", vars.get("DOUBLE_QUOTES_SPACED"));
+        assertEquals("expand\nnew\nlines", vars.get("EXPAND_NEWLINES"));
+        assertEquals("expand\nand\tand\r\nand\r", vars.get("EXPAND_MORE"));
+        assertEquals("dontexpand\\nnewlines\\u1234", vars.get("DONT_EXPAND_UNQUOTED"));
+        assertEquals("dontexpand\\nnewlines", vars.get("DONT_EXPAND_SQUOTED"));
+        assertEquals("equals==", vars.get("EQUAL_SIGNS"));
+        assertEquals("{\"foo\": \"bar\"}", vars.get("RETAIN_INNER_QUOTES"));
+        assertEquals("{\"foo\": \"bar\"}", vars.get("RETAIN_INNER_QUOTES_AS_STRING"));
+        assertEquals("some spaced out string", vars.get("TRIM_SPACE_FROM_UNQUOTED"));
+        assertEquals("therealnerdybeast@example.tld", vars.get("USERNAME"));
+        assertEquals("parsed", vars.get("SPACED_KEY"));
+        assertEquals("foo#bar", vars.get("INLINE_COMMENT"));
+        assertEquals("foo bar", vars.get("INLINE_COMMENT_PLAIN"));
+        assertEquals("something\\\" # Comment", vars.get("END_BACKSLASH"));
+        assertEquals("foo\\\\", vars.get("END_DOUBLE_BACKSLASH"));
+        assertEquals("foo", vars.get("lowercased_var"));
+        assertEquals("There are\n" +
+                "many\\u1234lines\n" +
+                "in this var!", vars.get("MULTILINE"));
+        assertEquals("\n    <-- Note: Indentation preserved", vars.get("SPACED_MULTILINE"));
+        assertEquals("Now also\n" +
+                "with single quotes! \"_\"", vars.get("MULTILINE_SINGLE_QUOTE"));
+        assertEquals("retained\"", vars.get("RETAIN_TRAILING_DQUOTE"));
+        assertEquals("retained'", vars.get("RETAIN_TRAILING_SQUOTE"));
+    }
 
-        envVariables.forEach((name, value) -> {
-            assertEquals(dotenv.get(name), value);
-        });
+    @Test
+    void shouldNotHandleEscapedLineFeed() {
+        String envFileContent = readTestResource("example.env");
+        Map<String, String> vars = EnvFileParser.parseEnvFileContent(envFileContent);
+
+        /*
+        If the linefeed was escaped then it should be:
+        "No linefeed --> \\nope"
+         */
+        assertEquals("No linefeed --> \\\n" +
+                "nope", vars.get("MULTILINE_ESCAPED_LINEFEED"));
     }
 
     private static String readTestResource(String fileName) {
