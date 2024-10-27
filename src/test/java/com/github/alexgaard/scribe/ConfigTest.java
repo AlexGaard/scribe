@@ -68,6 +68,20 @@ public class ConfigTest {
         assertEquals(List.of("foo", "bar"), config.getStringList("list").get());
     }
 
+    @Test
+    public void shouldGetEmail() {
+        Config config = configOf("email", "test@example.com");
+
+        assertEquals("test@example.com", config.getEmail("email").get());
+    }
+
+    @Test
+    public void shouldValidateEmail() {
+        Config config = configOf("email", "test@.example.com");
+
+        assertThrows(InvalidValueException.class, () -> config.getEmail("email").get());
+    }
+
     private Config emptyConfig() {
         return new ConfigBuilder()
                 .build();

@@ -1,6 +1,7 @@
 package com.github.alexgaard.scribe;
 
 import com.github.alexgaard.scribe.exception.InvalidFilePathException;
+import com.github.alexgaard.scribe.exception.InvalidValueException;
 import com.github.alexgaard.scribe.exception.MissingValueException;
 import com.github.alexgaard.scribe.parser.ValueParser;
 import com.github.alexgaard.scribe.util.FileUtils;
@@ -16,6 +17,7 @@ import java.util.Optional;
 
 import static com.github.alexgaard.scribe.util.ExceptionUtil.wrapValueParsingException;
 import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
+import static com.github.alexgaard.scribe.util.ValidationUtil.isEmailValid;
 
 public class Config {
 
@@ -161,6 +163,22 @@ public class Config {
 
         return getFileContentAsBytes(path)
                 .orElseThrow(() -> new InvalidFilePathException(path));
+    }
+
+    public Optional<String> getEmail(String name) {
+        return getString(name)
+                .map(email -> {
+                    if (!isEmailValid(email)) {
+                        throw new InvalidValueException(name, email, "Email is invalid");
+                    }
+
+                    return email;
+                });
+    }
+
+    public String requireEmail(String name) {
+        return getEmail(name)
+                .orElseThrow(() -> new MissingValueException(name));
     }
 
     public Optional<Integer> getPortNumber(String name) {
