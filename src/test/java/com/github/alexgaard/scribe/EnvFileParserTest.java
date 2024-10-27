@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

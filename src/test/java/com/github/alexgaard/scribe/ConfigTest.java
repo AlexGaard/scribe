@@ -5,9 +5,9 @@ import com.github.alexgaard.scribe.exception.MissingValueException;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigTest {
 
@@ -80,6 +80,30 @@ public class ConfigTest {
         Config config = configOf("email", "test@.example.com");
 
         assertThrows(InvalidValueException.class, () -> config.getEmail("email").get());
+    }
+
+    @Test
+    public void shouldCreateSubConfig() {
+        Config config = new ConfigBuilder()
+                .loadConfigMap(Map.of("prefix_val1", "foo", "prefix_val2", "bar", "baz", "val"))
+                .build()
+                .subConfig("prefix_", false);
+
+        assertTrue(config.has("prefix_val1"));
+        assertTrue(config.has("prefix_val2"));
+        assertFalse(config.has("baz"));
+    }
+
+    @Test
+    public void shouldCreateSubConfigAndStripPrefix() {
+        Config config = new ConfigBuilder()
+                .loadConfigMap(Map.of("prefix_val1", "foo", "prefix_val2", "bar", "baz", "val"))
+                .build()
+                .subConfig("prefix_", true);
+
+        assertTrue(config.has("val1"));
+        assertTrue(config.has("val2"));
+        assertFalse(config.has("baz"));
     }
 
     private Config emptyConfig() {

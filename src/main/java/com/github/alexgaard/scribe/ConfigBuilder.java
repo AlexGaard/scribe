@@ -15,7 +15,7 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
 
 public class ConfigBuilder {

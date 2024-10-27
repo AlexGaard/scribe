@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 
 public class FileUtils {
 

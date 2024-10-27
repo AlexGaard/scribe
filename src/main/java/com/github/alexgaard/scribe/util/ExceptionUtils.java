@@ -4,9 +4,9 @@ import com.github.alexgaard.scribe.exception.InvalidValueException;
 
 import java.util.function.Function;
 
-public class ExceptionUtil {
+public class ExceptionUtils {
 
-    private ExceptionUtil() {}
+    private ExceptionUtils() {}
 
 
     /**

@@ -4,20 +4,20 @@ import com.github.alexgaard.scribe.exception.InvalidFilePathException;
 import com.github.alexgaard.scribe.exception.InvalidValueException;
 import com.github.alexgaard.scribe.exception.MissingValueException;
 import com.github.alexgaard.scribe.parser.ValueParser;
+import com.github.alexgaard.scribe.util.ConfigUtils;
 import com.github.alexgaard.scribe.util.FileUtils;
 
 import java.net.URI;
 import java.net.URL;
 import java.time.Duration;
 import java.time.Period;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Predicate;
 
-import static com.github.alexgaard.scribe.util.ExceptionUtil.wrapValueParsingException;
+import static com.github.alexgaard.scribe.util.ExceptionUtils.wrapValueParsingException;
 import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
-import static com.github.alexgaard.scribe.util.ValidationUtil.isEmailValid;
+import static com.github.alexgaard.scribe.util.ValidationUtils.isEmailValid;
+import static com.github.alexgaard.scribe.util.ValidationUtils.isValidPortNumber;
 
 public class Config {
 
@@ -182,8 +182,14 @@ public class Config {
     }
 
     public Optional<Integer> getPortNumber(String name) {
-        return getString(name)
-                .map(wrapValueParsingException(name, ValueParser::parsePortNumber));
+        return getInt(name)
+                .map(portNumber -> {
+                    if (!isValidPortNumber(portNumber)) {
+                        throw new InvalidValueException(name, portNumber.toString(), "Port number is invalid");
+                    }
+
+                    return portNumber;
+                });
     }
 
     public int requirePortNumber(String name) {
@@ -218,8 +224,39 @@ public class Config {
                 .orElseThrow(() -> new MissingValueException(name));
     }
 
+    public boolean has(String name) {
+        return configMap.containsKey(name);
+    }
+
+    /**
+     * Creates a new config where all the names starts with the given prefix.
+     * @param namePrefix the prefix used to filter values to be included in the sub config
+     * @param stripPrefix if the prefix should be stripped from the keys in the resulting sub config
+     * @return a new sub config
+     */
+    public Config subConfig(String namePrefix, boolean stripPrefix) {
+        Map<String, String> subConfig = stripPrefix
+                ? ConfigUtils.filterAndStripPrefixFromMapKeys(configMap, namePrefix)
+                : ConfigUtils.filterMapKeys(configMap, namePrefix);
+
+        return new Config(subConfig);
+    }
+
+    /**
+     * Creates a new config where based on the provided key filter.
+     * @param filter the filter used to decide which keys should be included in the sub config
+     * @return a new sub config
+     */
+    public Config subConfig(Predicate<String> filter) {
+        return new Config(ConfigUtils.filterMapKeys(configMap, filter));
+    }
+
     public Map<String, String> getConfigMap() {
         return configMap;
+    }
+
+    public Config copy() {
+        return new Config(new HashMap<>(configMap));
     }
 
     @Override
