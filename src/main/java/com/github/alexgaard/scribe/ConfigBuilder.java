@@ -1,16 +1,22 @@
 package com.github.alexgaard.scribe;
 
+import com.github.alexgaard.scribe.exception.InvalidFilePathException;
 import com.github.alexgaard.scribe.parser.EnvFileParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
 
 public class ConfigBuilder {
 
@@ -42,7 +48,7 @@ public class ConfigBuilder {
         try {
             loadPropertiesFile(new FileInputStream(filePath));
         } catch (FileNotFoundException e) {
-            throw soften(e);
+            throw new InvalidFilePathException(filePath);
         }
 
         return this;
@@ -50,7 +56,7 @@ public class ConfigBuilder {
 
     public ConfigBuilder loadPropertiesFileIfExists(String filePath) {
         if (Files.exists(Path.of(filePath))) {
-            log.info("The file {} does not exist. Skipping...", filePath);
+            log.debug("The properties file {} does not exist", filePath);
             loadPropertiesFile(filePath);
         }
 
@@ -58,11 +64,14 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder loadProperties(Properties properties) {
-        configSources.add(() -> {
-            Map<String, String> values = new HashMap<>();
-            properties.putAll(values);
-            return values;
-        });
+        Map<String, String> values = properties.entrySet().stream().collect(
+                Collectors.toMap(
+                        e -> String.valueOf(e.getKey()),
+                        e -> String.valueOf(e.getValue()),
+                        (prev, next) -> next, HashMap::new
+                ));
+
+        configSources.add(() -> values);
         return this;
     }
 
@@ -72,12 +81,15 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder loadEnvFile(String filePath) {
-        return loadConfigMap(EnvFileParser.parseEnvFileContent(filePath));
+        String envFileContent = getFileContentAsString(filePath)
+                .orElseThrow(() -> new InvalidFilePathException(filePath));
+
+        return loadConfigMap(EnvFileParser.parseEnvFileContent(envFileContent));
     }
 
     public ConfigBuilder loadEnvFileIfExists(String filePath) {
         if (Files.exists(Path.of(filePath))) {
-            log.info("The file {} does not exist. Skipping...", filePath);
+            log.debug("The .env file {} does not exist", filePath);
             return loadConfigMap(EnvFileParser.parseEnvFileContent(filePath));
         }
 

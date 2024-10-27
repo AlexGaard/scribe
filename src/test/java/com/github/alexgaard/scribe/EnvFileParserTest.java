@@ -1,5 +1,6 @@
 package com.github.alexgaard.scribe;
 
+import com.github.alexgaard.scribe.exception.InvalidEnvFileException;
 import com.github.alexgaard.scribe.parser.EnvFileParser;
 import org.junit.jupiter.api.Test;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 
 import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class EnvFileParserTest {
 
@@ -60,6 +62,14 @@ public class EnvFileParserTest {
         assertEquals("No linefeed --> \\\n" +
                 "nope", vars.get("MULTILINE_ESCAPED_LINEFEED"));
     }
+
+    @Test
+    void shouldThrowIfEnvFileIsInvalid() {
+        String envFileContent = readTestResource("invalid.env");
+
+        assertThrows(InvalidEnvFileException.class, () -> EnvFileParser.parseEnvFileContent(envFileContent));
+    }
+
 
     private static String readTestResource(String fileName) {
         try (InputStream inputStream = EnvFileParserTest.class.getClassLoader().getResourceAsStream(fileName)) {
