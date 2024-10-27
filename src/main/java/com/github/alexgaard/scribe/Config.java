@@ -135,6 +135,12 @@ public class Config {
                 .orElseThrow(() -> new MissingValueException(name));
     }
 
+    /**
+     * Retrieves the content of a file if it exists.
+     * Expected config value example: "/path/to/file.txt"
+     * @param name name of config variable
+     * @return the content of the file if it exists
+     */
     public Optional<String> getFileContent(String name) {
         return getString(name).flatMap(FileUtils::getFileContentAsString);
     }
@@ -167,6 +173,13 @@ public class Config {
                 .orElseThrow(() -> new MissingValueException(name));
     }
 
+    /**
+     * Retrieves a string list from the config with the given name if it exists.
+     * The values in the list are separated by a comma, and whitespace is trimmed.
+     * Ex: "foo ,  bar" will be parsed into List.of("foo", "bar")
+     * @param name name of config variable
+     * @return an optional list of strings
+     */
     public Optional<List<String>> getStringList(String name) {
         return getString(name)
                 .map(ValueParser::parseStringList);
