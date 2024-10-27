@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static com.github.alexgaard.config.exception.ExceptionUtil.soften;
+import static com.github.alexgaard.config.util.ExceptionUtil.soften;
 
 public class ConfigBuilder {
 

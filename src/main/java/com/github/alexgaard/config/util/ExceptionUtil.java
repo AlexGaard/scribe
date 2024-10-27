@@ -1,6 +1,9 @@
-package com.github.alexgaard.config.exception;
+package com.github.alexgaard.config.util;
+
+import com.github.alexgaard.config.exception.InvalidValueException;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class ExceptionUtil {
 
@@ -22,7 +25,15 @@ public class ExceptionUtil {
         throw (T) t;
     }
 
-    public static <R> Function<String, R> wrapException(String key, UnsafeFunction<String, R> func) {
+    public static <R> R soften(UnsafeSupplier<R> supplier) {
+        try {
+            return supplier.get();
+        } catch (Exception e) {
+            throw soften(e);
+        }
+    }
+
+    public static <R> Function<String, R> wrapValueParsingException(String key, UnsafeFunction<String, R> func) {
         return (String value) -> {
             try {
                 return func.apply(value);
@@ -34,6 +45,10 @@ public class ExceptionUtil {
 
     public interface UnsafeFunction<T, R> {
         R apply(T t) throws Exception;
+    }
+
+    public interface UnsafeSupplier<R> {
+        R get() throws Exception;
     }
 
 }

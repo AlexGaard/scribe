@@ -2,14 +2,38 @@ package com.github.alexgaard.config.parser;
 
 import com.github.alexgaard.config.exception.InvalidValueException;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.security.InvalidParameterException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 public class ValueParser {
 
-    public static Character parseCharacter(String key, String value) {
+    public static Character parseCharacter(String value) {
         if (value.length() != 1) {
-            throw new InvalidValueException(key, value, "Expected 1 character in string, but found " + value.length());
+            throw new IllegalArgumentException("Expected 1 character in string, but found " + value.length());
         }
 
         return value.charAt(0);
+    }
+
+    public static int parsePortNumber(String value) {
+        int val = Integer.parseInt(value);
+
+        if (val < 0 || val > 65535) {
+            throw new IllegalArgumentException(value + " is not a valid port number");
+        }
+
+        return val;
+    }
+
+    public static List<String> parseStringList(String value) {
+        return Arrays.stream(value.split(","))
+                .map(String::trim)
+                .collect(Collectors.toList());
     }
 
 }
