@@ -12,7 +12,9 @@ import static java.lang.String.format;
 
 public class EnvFileParser {
 
-    private final static Pattern validNamePattern = Pattern.compile("[a-zA-Z_]+[a-zA-Z0-9_]*");
+    private EnvFileParser() {}
+
+    private static final Pattern validNamePattern = Pattern.compile("[a-zA-Z_]+\\w*");
 
     public static Map<String, String> parseEnvFileContent(String envFileContent) {
         Map<String, String> entries = new HashMap<>();
@@ -98,10 +100,10 @@ public class EnvFileParser {
 
     private static String handleDoubleQuoteExpansion(String value) {
         return value
-                .replaceAll("\\\\t", "\t")
-                .replaceAll("\\\\r\\\\n", "\r\n")
-                .replaceAll("\\\\r", "\r")
-                .replaceAll("\\\\n", "\n");
+                .replace("\\\\t", "\t")
+                .replace("\\\\r\\\\n", "\r\n")
+                .replace("\\\\r", "\r")
+                .replace("\\\\n", "\n");
     }
 
     private static String collectMultiLineString(List<String> lines, int startLineIdx, int startLineQuoteIdx, int endLineIdx, int endLineQuoteIdx) {

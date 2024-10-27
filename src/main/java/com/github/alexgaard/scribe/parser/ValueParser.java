@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 
 public class ValueParser {
 
+    private ValueParser() {}
+
     public static Character parseCharacter(String value) {
         if (value.length() != 1) {
             throw new IllegalArgumentException("Expected 1 character in string, but found " + value.length());

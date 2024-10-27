@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 
 public class ConfigUtils {
 
+    private ConfigUtils() {}
+
     public static Map<String, String> filterMapKeys(Map<String, String> map, String namePrefix) {
         return filterMapKeys(map, key -> key.startsWith(namePrefix));
     }

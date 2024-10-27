@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/AlexGaard/scribe.svg)](https://jitpack.io/#AlexGaard/scribe) [![Tests](https://github.com/AlexGaard/scribe/actions/workflows/test.yaml/badge.svg?branch=main)](https://github.com/AlexGaard/scribe/actions/workflows/test.yaml)
 
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=scribe&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=scribe) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=scribe&metric=bugs)](https://sonarcloud.io/summary/new_code?id=scribe) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=scribe&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=scribe) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=scribe&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=scribe)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=bugs)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe)
 
 Lightweight and simple library for configuring applications.
 

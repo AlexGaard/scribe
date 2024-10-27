@@ -9,36 +9,36 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigTest {
+class ConfigTest {
 
     @Test
-    public void shouldGetString() {
+    void shouldGetString() {
         Config config = configOf("foo", "bar");
         assertEquals("bar", config.getString("foo").get());
     }
 
     @Test
-    public void shouldRequireString() {
+    void shouldRequireString() {
         Config config = emptyConfig();
         assertThrows(MissingValueException.class, () -> config.requireString("foo1"));
     }
 
     @Test
-    public void shouldGetPortNumber() {
+    void shouldGetPortNumber() {
         Config config = configOf("port_number", "42");
 
         assertEquals(42, config.getPortNumber("port_number").get());
     }
 
     @Test
-    public void shouldRequirePortNumber() {
+    void shouldRequirePortNumber() {
         Config config = emptyConfig();
 
         assertThrows(MissingValueException.class, () -> config.requirePortNumber("port_number_none"));
     }
 
     @Test
-    public void shouldValidatePortNumber() {
+    void shouldValidatePortNumber() {
         Config config1 = configOf("port_number_invalid", "-321");
         assertThrows(InvalidValueException.class, () -> config1.requirePortNumber("port_number_invalid"));
 
@@ -48,42 +48,42 @@ public class ConfigTest {
     }
 
     @Test
-    public void shouldGetCharacter() {
+    void shouldGetCharacter() {
         Config config = configOf("char", "c");
 
         assertEquals('c', config.getCharacter("char").get());
     }
 
     @Test
-    public void shouldValidateCharacter() {
+    void shouldValidateCharacter() {
         Config config = configOf("char", "abc");
 
         assertThrows(InvalidValueException.class, () -> config.getCharacter("char"));
     }
 
     @Test
-    public void shouldGetStringList() {
+    void shouldGetStringList() {
         Config config = configOf("list", "foo,   bar");
 
         assertEquals(List.of("foo", "bar"), config.getStringList("list").get());
     }
 
     @Test
-    public void shouldGetEmail() {
+    void shouldGetEmail() {
         Config config = configOf("email", "test@example.com");
 
         assertEquals("test@example.com", config.getEmail("email").get());
     }
 
     @Test
-    public void shouldValidateEmail() {
+    void shouldValidateEmail() {
         Config config = configOf("email", "test@.example.com");
 
         assertThrows(InvalidValueException.class, () -> config.getEmail("email").get());
     }
 
     @Test
-    public void shouldCreateSubConfig() {
+    void shouldCreateSubConfig() {
         Config config = new ConfigBuilder()
                 .loadConfigMap(Map.of("prefix_val1", "foo", "prefix_val2", "bar", "baz", "val"))
                 .build()
@@ -95,7 +95,7 @@ public class ConfigTest {
     }
 
     @Test
-    public void shouldCreateSubConfigAndStripPrefix() {
+    void shouldCreateSubConfigAndStripPrefix() {
         Config config = new ConfigBuilder()
                 .loadConfigMap(Map.of("prefix_val1", "foo", "prefix_val2", "bar", "baz", "val"))
                 .build()

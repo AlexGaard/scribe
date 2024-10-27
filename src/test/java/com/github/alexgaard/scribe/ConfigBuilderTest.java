@@ -3,17 +3,15 @@ package com.github.alexgaard.scribe;
 import com.github.alexgaard.scribe.exception.InvalidFilePathException;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigBuilderTest {
+class ConfigBuilderTest {
 
     @Test
-    public void shouldLoadEnvVars() {
+    void shouldLoadEnvVars() {
         Config config = new ConfigBuilder()
                 .loadEnvironmentVariables()
                 .build();
@@ -22,7 +20,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadSystemProps() {
+    void shouldLoadSystemProps() {
         Config config = new ConfigBuilder()
                 .loadSystemProperties()
                 .build();
@@ -31,7 +29,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadConfigMap() {
+    void shouldLoadConfigMap() {
         Config config = new ConfigBuilder()
                 .loadConfigMap(Map.of("foo", "bar"))
                 .build();
@@ -40,7 +38,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadProperties() {
+    void shouldLoadProperties() {
         Properties properties = new Properties();
         properties.put("foo", "bar");
 
@@ -52,7 +50,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadPropertiesFile() {
+    void shouldLoadPropertiesFile() {
         Config config = new ConfigBuilder()
                 .loadPropertiesFile("./data/test.properties")
                 .build();
@@ -61,7 +59,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldThrowIfLoadingPropertiesFileThatDoesNotExist() {
+    void shouldThrowIfLoadingPropertiesFileThatDoesNotExist() {
         assertThrows(InvalidFilePathException.class, () -> {
             new ConfigBuilder()
                     .loadPropertiesFile("./data/does-not-exist.properties")
@@ -70,7 +68,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadPropertiesFileIfExists() {
+    void shouldLoadPropertiesFileIfExists() {
         Config config = new ConfigBuilder()
                 .loadPropertiesFileIfExists("./data/does-not-exist.properties")
                 .build();
@@ -79,7 +77,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadEnvFile() {
+    void shouldLoadEnvFile() {
         Config config = new ConfigBuilder()
                 .loadEnvFile("./data/test.env")
                 .build();
@@ -88,7 +86,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldLoadEnvFileIfExists() {
+    void shouldLoadEnvFileIfExists() {
         Config config = new ConfigBuilder()
                 .loadEnvFileIfExists("./data/does-not-exist.env")
                 .build();
@@ -97,7 +95,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldThrowIfLoadingEnvFileThatDoesNotExist() {
+    void shouldThrowIfLoadingEnvFileThatDoesNotExist() {
         assertThrows(InvalidFilePathException.class, () -> {
             new ConfigBuilder()
                     .loadEnvFile("./data/does-not-exist.properties")
@@ -106,7 +104,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldAddValues() {
+    void shouldAddValues() {
         Config config = new ConfigBuilder()
                 .add("foo", "bar")
                 .build();
@@ -115,7 +113,7 @@ public class ConfigBuilderTest {
     }
 
     @Test
-    public void shouldOverwritePreviousConfig() {
+    void shouldOverwritePreviousConfig() {
         Config config = new ConfigBuilder()
                 .add("foo", "bar")
                 .add("foo", "baz")

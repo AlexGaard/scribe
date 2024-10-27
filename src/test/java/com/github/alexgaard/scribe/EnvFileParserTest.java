@@ -11,7 +11,7 @@ import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class EnvFileParserTest {
+class EnvFileParserTest {
 
     @Test
     void shouldParseEnvFile() {

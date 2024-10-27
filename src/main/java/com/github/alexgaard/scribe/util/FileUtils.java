@@ -8,6 +8,8 @@ import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 
 public class FileUtils {
 
+    private FileUtils() {}
+
     public static Optional<String> getFileContentAsString(String filePath) {
         return toPath(filePath)
                 .map(p -> soften(() -> Files.readString(p)));
