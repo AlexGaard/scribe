@@ -1,13 +1,7 @@
-package com.github.alexgaard.config.parser;
+package com.github.alexgaard.scribe.parser;
 
-import com.github.alexgaard.config.exception.InvalidValueException;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.security.InvalidParameterException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ValueParser {

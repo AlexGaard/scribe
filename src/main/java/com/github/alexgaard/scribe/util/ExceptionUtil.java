@@ -1,9 +1,8 @@
-package com.github.alexgaard.config.util;
+package com.github.alexgaard.scribe.util;
 
-import com.github.alexgaard.config.exception.InvalidValueException;
+import com.github.alexgaard.scribe.exception.InvalidValueException;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 public class ExceptionUtil {
 

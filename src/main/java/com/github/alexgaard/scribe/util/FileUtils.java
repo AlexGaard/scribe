@@ -1,10 +1,10 @@
-package com.github.alexgaard.config.util;
+package com.github.alexgaard.scribe.util;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
 
-import static com.github.alexgaard.config.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
 
 public class FileUtils {
 

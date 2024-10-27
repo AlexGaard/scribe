@@ -1,9 +1,9 @@
-package com.github.alexgaard.config;
+package com.github.alexgaard.scribe;
 
-import com.github.alexgaard.config.exception.InvalidFilePathException;
-import com.github.alexgaard.config.exception.MissingValueException;
-import com.github.alexgaard.config.parser.ValueParser;
-import com.github.alexgaard.config.util.FileUtils;
+import com.github.alexgaard.scribe.exception.InvalidFilePathException;
+import com.github.alexgaard.scribe.exception.MissingValueException;
+import com.github.alexgaard.scribe.parser.ValueParser;
+import com.github.alexgaard.scribe.util.FileUtils;
 
 import java.net.URI;
 import java.net.URL;
@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.github.alexgaard.config.util.ExceptionUtil.wrapValueParsingException;
-import static com.github.alexgaard.config.util.FileUtils.getFileContentAsString;
+import static com.github.alexgaard.scribe.util.ExceptionUtil.wrapValueParsingException;
+import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
 
 public class Config {
 

@@ -1,12 +1,12 @@
-package com.github.alexgaard.config;
+package com.github.alexgaard.scribe;
 
-import com.github.alexgaard.config.parser.EnvFileParser;
+import com.github.alexgaard.scribe.parser.EnvFileParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.util.Map;
 
-import static com.github.alexgaard.config.util.ExceptionUtil.soften;
+import static com.github.alexgaard.scribe.util.ExceptionUtil.soften;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EnvFileParserTest {

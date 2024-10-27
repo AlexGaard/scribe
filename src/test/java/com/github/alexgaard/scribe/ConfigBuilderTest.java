@@ -1,4 +1,4 @@
-package com.github.alexgaard.config;
+package com.github.alexgaard.scribe;
 
 import org.junit.jupiter.api.Test;
 

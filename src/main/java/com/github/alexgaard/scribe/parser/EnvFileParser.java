@@ -1,8 +1,7 @@
-package com.github.alexgaard.config.parser;
+package com.github.alexgaard.scribe.parser;
 
-import com.github.alexgaard.config.exception.InvalidEnvFileException;
+import com.github.alexgaard.scribe.exception.InvalidEnvFileException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

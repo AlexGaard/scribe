@@ -1,4 +1,4 @@
-package com.github.alexgaard.config.exception;
+package com.github.alexgaard.scribe.exception;
 
 public class InvalidFilePathException extends RuntimeException {
 
