@@ -9,8 +9,7 @@ import com.github.alexgaard.scribe.util.FileUtils;
 
 import java.net.URI;
 import java.net.URL;
-import java.time.Duration;
-import java.time.Period;
+import java.time.*;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -97,6 +96,60 @@ public class Config {
                 .orElseThrow(() -> new MissingValueException(name));
     }
 
+    public Optional<UUID> getUuid(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, UUID::fromString));
+    }
+
+    public UUID requireUuid(String name) {
+        return getUuid(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
+    public Optional<LocalTime> getLocalTime(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, LocalTime::parse));
+    }
+
+    public LocalTime requireLocalTime(String name) {
+        return getLocalTime(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
+    public Optional<LocalDate> getLocalDate(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, LocalDate::parse));
+    }
+
+    public LocalDate requireLocalDate(String name) {
+        return getLocalDate(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
+    public Optional<LocalDateTime> getLocalDateTime(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, LocalDateTime::parse));
+    }
+
+    public LocalDateTime requireLocalDateTime(String name) {
+        return getLocalDateTime(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
+    public Optional<OffsetDateTime> getOffsetDateTime(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, OffsetDateTime::parse));
+    }
+
+    public OffsetDateTime requireOffsetDateTime(String name) {
+        return getOffsetDateTime(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
+    public Optional<ZonedDateTime> getZonedDateTime(String name) {
+        return getString(name)
+                .map(wrapValueParsingException(name, ZonedDateTime::parse));
+    }
+
+    public ZonedDateTime requireZonedDateTime(String name) {
+        return getZonedDateTime(name).orElseThrow(() -> new MissingValueException(name));
+    }
+
     public Optional<URI> getUri(String name) {
         return getString(name)
                 .map(wrapValueParsingException(name, URI::new));
@@ -140,6 +193,7 @@ public class Config {
     /**
      * Retrieves the content of a file if it exists.
      * Expected config value example: "/path/to/file.txt"
+     *
      * @param name name of config variable
      * @return the content of the file if it exists
      */
@@ -201,6 +255,7 @@ public class Config {
      * Retrieves a string list from the config with the given name if it exists.
      * The values in the list are separated by a comma, and whitespace is trimmed.
      * Ex: "foo ,  bar" will be parsed into List.of("foo", "bar")
+     *
      * @param name name of config variable
      * @return an optional list of strings
      */
@@ -230,7 +285,8 @@ public class Config {
 
     /**
      * Creates a new config where all the names starts with the given prefix.
-     * @param namePrefix the prefix used to filter values to be included in the sub config
+     *
+     * @param namePrefix  the prefix used to filter values to be included in the sub config
      * @param stripPrefix if the prefix should be stripped from the keys in the resulting sub config
      * @return a new sub config
      */
@@ -244,6 +300,7 @@ public class Config {
 
     /**
      * Creates a new config where based on the provided key filter.
+     *
      * @param filter the filter used to decide which keys should be included in the sub config
      * @return a new sub config
      */
