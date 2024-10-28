@@ -16,16 +16,6 @@ public class ValueParser {
         return value.charAt(0);
     }
 
-    public static int parsePortNumber(String value) {
-        int val = Integer.parseInt(value);
-
-        if (val < 0 || val > 65535) {
-            throw new IllegalArgumentException(value + " is not a valid port number");
-        }
-
-        return val;
-    }
-
     public static List<String> parseStringList(String value) {
         return Arrays.stream(value.split(","))
                 .map(String::trim)
