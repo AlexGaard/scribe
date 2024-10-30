@@ -2,7 +2,9 @@ package com.github.alexgaard.scribe.util;
 
 import com.github.alexgaard.scribe.exception.InvalidValueException;
 
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class ExceptionUtils {
 
@@ -32,12 +34,34 @@ public class ExceptionUtils {
         }
     }
 
+    public static <T, R> Function<T, R> soften(UnsafeFunction<T, R> supplier) {
+        return (T val) -> {
+            try {
+                return supplier.apply(val);
+            } catch (Exception e) {
+                throw soften(e);
+            }
+        };
+    }
+
     public static <R> Function<String, R> wrapValueParsingException(String key, UnsafeFunction<String, R> func) {
         return (String value) -> {
             try {
                 return func.apply(value);
             } catch (Exception e) {
                 throw new InvalidValueException(key, value, e);
+            }
+        };
+    }
+
+    public static <R> Function<List<String>, List<R>> wrapValuesParsingException(String key, UnsafeFunction<String, R> func) {
+        return (List<String> values) -> {
+            try {
+                return values.stream()
+                        .map(soften(func))
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                throw new InvalidValueException(key, values, e);
             }
         };
     }

@@ -2,8 +2,6 @@ package com.github.alexgaard.scribe;
 
 import com.github.alexgaard.scribe.exception.InvalidFilePathException;
 import com.github.alexgaard.scribe.parser.EnvFileParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,8 +17,6 @@ import static com.github.alexgaard.scribe.util.ExceptionUtils.soften;
 import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
 
 public class ConfigBuilder {
-
-    private static final Logger log = LoggerFactory.getLogger(ConfigBuilder.class);
 
     private final List<Supplier<Map<String, String>>> configSources = new ArrayList<>();
 
@@ -56,7 +52,6 @@ public class ConfigBuilder {
 
     public ConfigBuilder loadPropertiesFileIfExists(String filePath) {
         if (Files.exists(Path.of(filePath))) {
-            log.debug("The properties file {} does not exist", filePath);
             loadPropertiesFile(filePath);
         }
 
@@ -89,7 +84,6 @@ public class ConfigBuilder {
 
     public ConfigBuilder loadEnvFileIfExists(String filePath) {
         if (Files.exists(Path.of(filePath))) {
-            log.debug("The .env file {} does not exist", filePath);
             return loadConfigMap(EnvFileParser.parseEnvFileContent(filePath));
         }
 

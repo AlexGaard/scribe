@@ -4,9 +4,9 @@
 
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=bugs)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=AlexGaard_scribe&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=AlexGaard_scribe)
 
-Lightweight and simple library for configuring applications.
+Lightweight and simple zero-dependency library for configuring applications.
 
-Supports loading configuration parameters from different sources such as properties, environment variables, .env files, HashMaps etc...
+Supports loading configuration parameters from different sources such as properties, environment variables, .env files, HashMaps and retrieve them in a simple manner.
 
 ## Usage
 
@@ -22,6 +22,7 @@ Config config = new ConfigBuilder()
 
 Optional<String> foo = config.getString("FOO");
 boolean isEnabled = config.requireBoolean("IS_ENABLED");
+String email = config.requireEmail("ALLOWED_EMAIL");
 int dbPort = config.requirePortNumber("DB_PORT");
 URL url = config.requireUrl("SOME_URL");
 List<String> values = config.requireStringList("VALUES");

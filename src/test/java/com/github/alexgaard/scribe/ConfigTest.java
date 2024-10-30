@@ -4,8 +4,10 @@ import com.github.alexgaard.scribe.exception.InvalidValueException;
 import com.github.alexgaard.scribe.exception.MissingValueException;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,6 +62,17 @@ class ConfigTest {
 
         assertThrows(InvalidValueException.class, () -> config.getCharacter("char"));
     }
+
+    @Test
+    void shouldGetUuidList() {
+        UUID uuid1 = UUID.randomUUID();
+        UUID uuid2 = UUID.randomUUID();
+
+        Config config = configOf("uuids", String.join(", ", List.of(uuid1.toString(), uuid2.toString())));
+
+        assertEquals(List.of(uuid1, uuid2), config.requireUuidList("uuids"));
+    }
+
 
     @Test
     void shouldGetStringList() {

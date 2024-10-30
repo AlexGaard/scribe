@@ -12,8 +12,10 @@ import java.net.URL;
 import java.time.*;
 import java.util.*;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import static com.github.alexgaard.scribe.util.ExceptionUtils.wrapValueParsingException;
+import static com.github.alexgaard.scribe.util.ExceptionUtils.wrapValuesParsingException;
 import static com.github.alexgaard.scribe.util.FileUtils.getFileContentAsString;
 import static com.github.alexgaard.scribe.util.ValidationUtils.isEmailValid;
 import static com.github.alexgaard.scribe.util.ValidationUtils.isValidPortNumber;
@@ -33,7 +35,17 @@ public class Config {
 
     public boolean requireBoolean(String name) {
         return getBoolean(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Boolean>> getBooleanList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Boolean::parseBoolean));
+    }
+
+    public List<Boolean> requireBooleanList(String name) {
+        return getBooleanList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Integer> getInt(String name) {
@@ -43,9 +55,19 @@ public class Config {
 
     public int requireInt(String name) {
         return getInt(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
     }
 
+    public Optional<List<Integer>> getIntList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Integer::parseInt));
+    }
+
+    public List<Integer> requireIntList(String name) {
+        return getIntList(name)
+                .orElseThrow(missingValue(name));
+    }
+    
     public Optional<Long> getLong(String name) {
         return getString(name)
                 .map(wrapValueParsingException(name, Long::parseLong));
@@ -53,7 +75,17 @@ public class Config {
 
     public long requireLong(String name) {
         return getLong(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Long>> getLongList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Long::parseLong));
+    }
+
+    public List<Long> requireLongList(String name) {
+        return getLongList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Short> getShort(String name) {
@@ -63,7 +95,17 @@ public class Config {
 
     public short requireShort(String name) {
         return getShort(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Short>> getShortList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Short::parseShort));
+    }
+
+    public List<Short> requireShortList(String name) {
+        return getShortList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Float> getFloat(String name) {
@@ -73,8 +115,19 @@ public class Config {
 
     public float requireFloat(String name) {
         return getFloat(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
     }
+
+    public Optional<List<Float>> getFloatList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Float::parseFloat));
+    }
+
+    public List<Float> requireFloatList(String name) {
+        return getFloatList(name)
+                .orElseThrow(missingValue(name));
+    }
+
 
     public Optional<Double> getDouble(String name) {
         return getString(name)
@@ -83,7 +136,17 @@ public class Config {
 
     public double requireDouble(String name) {
         return getDouble(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Double>> getDoubleList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Double::parseDouble));
+    }
+
+    public List<Double> requireDoubleList(String name) {
+        return getDoubleList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Character> getCharacter(String name) {
@@ -93,7 +156,17 @@ public class Config {
 
     public char requireCharacter(String name) {
         return getCharacter(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Character>> getCharacterList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, ValueParser::parseCharacter));
+    }
+
+    public List<Character> requireCharacterList(String name) {
+        return getCharacterList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<UUID> getUuid(String name) {
@@ -102,7 +175,18 @@ public class Config {
     }
 
     public UUID requireUuid(String name) {
-        return getUuid(name).orElseThrow(() -> new MissingValueException(name));
+        return getUuid(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<UUID>> getUuidList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, UUID::fromString));
+    }
+
+    public List<UUID> requireUuidList(String name) {
+        return getUuidList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<LocalTime> getLocalTime(String name) {
@@ -111,7 +195,18 @@ public class Config {
     }
 
     public LocalTime requireLocalTime(String name) {
-        return getLocalTime(name).orElseThrow(() -> new MissingValueException(name));
+        return getLocalTime(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<LocalTime>> getLocalTimeList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, LocalTime::parse));
+    }
+
+    public List<LocalTime> requireLocalTimeList(String name) {
+        return getLocalTimeList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<LocalDate> getLocalDate(String name) {
@@ -120,7 +215,18 @@ public class Config {
     }
 
     public LocalDate requireLocalDate(String name) {
-        return getLocalDate(name).orElseThrow(() -> new MissingValueException(name));
+        return getLocalDate(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<LocalDate>> getLocalDateList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, LocalDate::parse));
+    }
+
+    public List<LocalDate> requireLocalDateList(String name) {
+        return getLocalDateList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<LocalDateTime> getLocalDateTime(String name) {
@@ -129,7 +235,18 @@ public class Config {
     }
 
     public LocalDateTime requireLocalDateTime(String name) {
-        return getLocalDateTime(name).orElseThrow(() -> new MissingValueException(name));
+        return getLocalDateTime(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<LocalDateTime>> getLocalDateTimeList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, LocalDateTime::parse));
+    }
+
+    public List<LocalDateTime> requireLocalDateTimeList(String name) {
+        return getLocalDateTimeList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<OffsetDateTime> getOffsetDateTime(String name) {
@@ -138,7 +255,18 @@ public class Config {
     }
 
     public OffsetDateTime requireOffsetDateTime(String name) {
-        return getOffsetDateTime(name).orElseThrow(() -> new MissingValueException(name));
+        return getOffsetDateTime(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<OffsetDateTime>> getOffsetDateTimeList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, OffsetDateTime::parse));
+    }
+
+    public List<OffsetDateTime> requireOffsetDateTimeList(String name) {
+        return getOffsetDateTimeList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<ZonedDateTime> getZonedDateTime(String name) {
@@ -147,7 +275,18 @@ public class Config {
     }
 
     public ZonedDateTime requireZonedDateTime(String name) {
-        return getZonedDateTime(name).orElseThrow(() -> new MissingValueException(name));
+        return getZonedDateTime(name)
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<ZonedDateTime>> getZonedDateTimeList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, ZonedDateTime::parse));
+    }
+
+    public List<ZonedDateTime> requireZonedDateTimeList(String name) {
+        return getZonedDateTimeList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<URI> getUri(String name) {
@@ -156,7 +295,17 @@ public class Config {
     }
 
     public URI requireUri(String name) {
-        return getUri(name).orElseThrow(() -> new MissingValueException(name));
+        return getUri(name).orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<URI>> getUriList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, URI::new));
+    }
+
+    public List<URI> requireUriList(String name) {
+        return getUriList(name)
+                .orElseThrow(missingValue(name));
     }
 
 
@@ -166,9 +315,19 @@ public class Config {
     }
 
     public URL requireUrl(String name) {
-        return getUrl(name).orElseThrow(() -> new MissingValueException(name));
+        return getUrl(name)
+                .orElseThrow(missingValue(name));
     }
 
+    public Optional<List<URL>> getUrlList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, URL::new));
+    }
+
+    public List<URL> requireUrlList(String name) {
+        return getUrlList(name)
+                .orElseThrow(missingValue(name));
+    }
 
     public Optional<Duration> getDuration(String name) {
         return getString(name)
@@ -177,7 +336,17 @@ public class Config {
 
     public Duration requireDuration(String name) {
         return getDuration(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Duration>> getDurationList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Duration::parse));
+    }
+
+    public List<Duration> requireDurationList(String name) {
+        return getDurationList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Period> getPeriod(String name) {
@@ -187,7 +356,17 @@ public class Config {
 
     public Period requirePeriod(String name) {
         return getPeriod(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Period>> getPeriodList(String name) {
+        return getStringList(name)
+                .map(wrapValuesParsingException(name, Period::parse));
+    }
+
+    public List<Period> requirePeriodList(String name) {
+        return getPeriodList(name)
+                .orElseThrow(missingValue(name));
     }
 
     /**
@@ -198,7 +377,8 @@ public class Config {
      * @return the content of the file if it exists
      */
     public Optional<String> getFileContent(String name) {
-        return getString(name).flatMap(FileUtils::getFileContentAsString);
+        return getString(name)
+                .flatMap(FileUtils::getFileContentAsString);
     }
 
     public String requireFileContent(String name) {
@@ -208,6 +388,13 @@ public class Config {
                 .orElseThrow(() -> new InvalidFilePathException(path));
     }
 
+    /**
+     * Retrieves the content of a file if it exists.
+     * Expected config value example: "/path/to/file.txt"
+     *
+     * @param name name of config variable
+     * @return the content of the file if it exists
+     */
     public Optional<byte[]> getFileContentAsBytes(String name) {
         return getString(name).flatMap(FileUtils::getFileContentAsBytes);
     }
@@ -232,7 +419,25 @@ public class Config {
 
     public String requireEmail(String name) {
         return getEmail(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<String>> getEmailList(String name) {
+        return getStringList(name)
+                .map(emails -> {
+                    emails.forEach(e -> {
+                        if (!isEmailValid(e)) {
+                            throw new InvalidValueException(name, e, "Email is invalid");
+                        }
+                    });
+
+                    return emails;
+                });
+    }
+
+    public List<String> requireEmailList(String name) {
+        return getEmailList(name)
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<Integer> getPortNumber(String name) {
@@ -248,7 +453,25 @@ public class Config {
 
     public int requirePortNumber(String name) {
         return getPortNumber(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
+    }
+
+    public Optional<List<Integer>> getPortNumberList(String name) {
+        return getIntList(name)
+                .map(portNumbers -> {
+                    portNumbers.forEach(portNumber -> {
+                        if (!isValidPortNumber(portNumber)) {
+                            throw new InvalidValueException(name, portNumber.toString(), "Port number is invalid");
+                        }
+                    });
+
+                    return portNumbers;
+                });
+    }
+
+    public List<Integer> requirePortNumberList(String name) {
+        return getPortNumberList(name)
+                .orElseThrow(missingValue(name));
     }
 
     /**
@@ -267,7 +490,7 @@ public class Config {
     public List<String> requireStringList(String name) {
         return getString(name)
                 .map(ValueParser::parseStringList)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
     }
 
     public Optional<String> getString(String name) {
@@ -276,7 +499,7 @@ public class Config {
 
     public String requireString(String name) {
         return getString(name)
-                .orElseThrow(() -> new MissingValueException(name));
+                .orElseThrow(missingValue(name));
     }
 
     public boolean has(String name) {
@@ -340,5 +563,9 @@ public class Config {
     @Override
     public int hashCode() {
         return Objects.hash(configMap);
+    }
+    
+    private Supplier<MissingValueException> missingValue(String name) {
+        return () -> new MissingValueException(name);
     }
 }
