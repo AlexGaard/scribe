@@ -14,6 +14,7 @@ public class ValueParserTest {
         assertEquals(Duration.ofMinutes(5), parseDuration("5m"));
         assertEquals(Duration.ofSeconds(12), parseDuration("PT12s"));
         assertEquals(Duration.ofSeconds(12), parseDuration("pt12s"));
+        assertEquals(Duration.parse("-PT-6H+3M"), parseDuration("-PT-6H+3M"));
     }
 
 }

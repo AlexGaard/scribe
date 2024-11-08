@@ -18,7 +18,9 @@ public class ValueParser {
     }
 
     public static Duration parseDuration(String value) {
-        if (value.startsWith("PT") || value.startsWith("pt")) {
+        String lowerCaseVal = value.toLowerCase();
+
+        if (lowerCaseVal.startsWith("p") || lowerCaseVal.startsWith("-p")) {
             return Duration.parse(value);
         } else {
             return Duration.parse("PT" + value);
