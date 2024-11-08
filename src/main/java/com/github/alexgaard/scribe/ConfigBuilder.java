@@ -83,11 +83,13 @@ public class ConfigBuilder {
     }
 
     public ConfigBuilder loadEnvFileIfExists(String filePath) {
-        if (Files.exists(Path.of(filePath))) {
-            return loadConfigMap(EnvFileParser.parseEnvFileContent(filePath));
+        Optional<String> fileContent = getFileContentAsString(filePath);
+
+        if (fileContent.isEmpty()) {
+            return this;
         }
 
-        return this;
+        return loadConfigMap(EnvFileParser.parseEnvFileContent(fileContent.get()));
     }
 
     public ConfigBuilder add(String name, String value) {
