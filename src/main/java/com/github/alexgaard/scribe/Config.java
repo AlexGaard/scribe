@@ -331,7 +331,7 @@ public class Config {
 
     public Optional<Duration> getDuration(String name) {
         return getString(name)
-                .map(wrapValueParsingException(name, Duration::parse));
+                .map(wrapValueParsingException(name, ValueParser::parseDuration));
     }
 
     public Duration requireDuration(String name) {
@@ -341,7 +341,7 @@ public class Config {
 
     public Optional<List<Duration>> getDurationList(String name) {
         return getStringList(name)
-                .map(wrapValuesParsingException(name, Duration::parse));
+                .map(wrapValuesParsingException(name, ValueParser::parseDuration));
     }
 
     public List<Duration> requireDurationList(String name) {

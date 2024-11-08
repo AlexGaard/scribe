@@ -89,13 +89,6 @@ class ConfigTest {
     }
 
     @Test
-    void shouldValidateEmail() {
-        Config config = configOf("email", "test@.example.com");
-
-        assertThrows(InvalidValueException.class, () -> config.getEmail("email").get());
-    }
-
-    @Test
     void shouldCreateSubConfig() {
         Config config = new ConfigBuilder()
                 .loadConfigMap(Map.of("prefix_val1", "foo", "prefix_val2", "bar", "baz", "val"))

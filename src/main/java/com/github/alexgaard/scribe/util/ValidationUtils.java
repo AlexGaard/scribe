@@ -7,7 +7,7 @@ public class ValidationUtils {
     private ValidationUtils() {}
 
     private static final Pattern EMAIL_REGEX =
-            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9][A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
 
     public static boolean isEmailValid(String email) {
@@ -15,7 +15,7 @@ public class ValidationUtils {
     }
 
     public static boolean isValidPortNumber(int portNumber) {
-        return portNumber < 0 || portNumber > 65535;
+        return portNumber > 0 && portNumber <= 65535;
     }
 
 }

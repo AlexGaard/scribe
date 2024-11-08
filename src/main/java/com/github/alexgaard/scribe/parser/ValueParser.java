@@ -1,5 +1,6 @@
 package com.github.alexgaard.scribe.parser;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +15,14 @@ public class ValueParser {
         }
 
         return value.charAt(0);
+    }
+
+    public static Duration parseDuration(String value) {
+        if (value.startsWith("PT") || value.startsWith("pt")) {
+            return Duration.parse(value);
+        } else {
+            return Duration.parse("PT" + value);
+        }
     }
 
     public static List<String> parseStringList(String value) {

@@ -1,7 +1,6 @@
-package com.github.alexgaard.scribe;
+package com.github.alexgaard.scribe.parser;
 
 import com.github.alexgaard.scribe.exception.InvalidEnvFileException;
-import com.github.alexgaard.scribe.parser.EnvFileParser;
 import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;

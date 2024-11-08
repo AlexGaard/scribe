@@ -100,10 +100,10 @@ public class EnvFileParser {
 
     private static String handleDoubleQuoteExpansion(String value) {
         return value
-                .replace("\\\\t", "\t")
-                .replace("\\\\r\\\\n", "\r\n")
-                .replace("\\\\r", "\r")
-                .replace("\\\\n", "\n");
+                .replace("\\t", "\t")
+                .replace("\\r\\n", "\r\n")
+                .replace("\\r", "\r")
+                .replace("\\n", "\n");
     }
 
     private static String collectMultiLineString(List<String> lines, int startLineIdx, int startLineQuoteIdx, int endLineIdx, int endLineQuoteIdx) {
